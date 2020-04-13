@@ -59,6 +59,5 @@ public class AuthTokenAspect {
             }
             return "权限不足，无法访问";
         }
-        //取得请求头中的值
     }
 }

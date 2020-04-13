@@ -95,33 +95,21 @@ public class WebLogAspect {
         log.info("RESPONSE:" + ret);
     }
 
-    /**
-     * 通过环绕增强目标方法执行时间，可用于分析性能
-     * 可通过连接点入参和反射机制，再这里调用目标方法getHello(),并返回调用结果
-     * @param proceedingJoinPoint
-     * @return
-     * @throws Throwable
-     */
-    @Around(value = "webLog()")
-    public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
-        //得到开始时间
-        long startTime = System.currentTimeMillis();
-        //执行连接点的目标方法getHello()
-        Object ob = proceedingJoinPoint.proceed();
-        Map<String,Object> threadInfo = threadLocal.get();
-        //计算出方法的真实执行时间，可以在目标方法中加入线程休眠体会结果
-        Long takeTime = System.currentTimeMillis() - startTime;
-        //存入线程变量
-        threadInfo.put("takeTime",takeTime);
-        log.info("耗时：" + takeTime);
-        threadLocal.set(threadInfo);
-        return ob;
-    }
-
-    /**
-     * 异常处理机制
-     * @param throwable
-     */
+//    @Around(value = "webLog()")
+//    public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
+//        //得到开始时间
+//        long startTime = System.currentTimeMillis();
+//        //执行连接点的目标方法getHello()
+//        Object ob = proceedingJoinPoint.proceed();
+//        Map<String,Object> threadInfo = threadLocal.get();
+//        //计算出方法的真实执行时间，可以在目标方法中加入线程休眠体会结果
+//        Long takeTime = System.currentTimeMillis() - startTime;
+//        //存入线程变量
+//        threadInfo.put("takeTime",takeTime);
+//        log.info("耗时：" + takeTime);
+//        threadLocal.set(threadInfo);
+//        return ob;
+//    }
     @AfterThrowing(value = "webLog()",throwing = "throwable")
     public void doAfterThrowing(Throwable throwable){
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
